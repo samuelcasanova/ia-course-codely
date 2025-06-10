@@ -5,13 +5,13 @@
 <!-- PROJECT LOGO -->
 <div align="center">
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/1280px-Node.js_logo.svg.png" alt="Logo" height="80">
-  <h3 align="center">Node project template</h3>
+  <h3 align="center">IA course by Codely TV</h3>
 </div>
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Node project template to bootstrap other solutions
+IA course by Codely TV
 
 ### Built With
 
