@@ -1,6 +1,7 @@
 services:
   ia_postgres_pgvector:
     image: pgvector/pgvector:0.7.4-pg16
+    container_name: pgvector
     restart: always
     environment:
       POSTGRES_DB: postgres
@@ -11,3 +12,8 @@ services:
     volumes:
       - .data/pg/data:/var/lib/postgresql/data
       - .data/pg:/docker-entrypoint-initdb.d
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - .data/ollama/data:/root/.ollama
