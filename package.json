@@ -10,14 +10,14 @@
     "dev": "nodemon",
     "test:watch": "jest --watch",
     "test": "jest",
-    "model": "docker exec -it ollama ollama run nomic-embed-text"
+    "model": "docker exec -it ollama ollama run nomic-embed-text",
+    "create": "ts-node ./src/create.ts",
+    "search": "ts-node ./src/search.ts"
   },
   "keywords": [
     "node",
-    "template",
-    "boilerplate",
-    "typescript",
-    "eslint"
+    "ia",
+    "typescript"
   ],
   "author": "Samuel Casanova",
   "license": "ISC",
