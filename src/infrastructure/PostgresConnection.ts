@@ -1,21 +1,12 @@
 import postgres from 'postgres'
+import { config } from '../config/config'
 
 export class PostgresConnection {
   public readonly sql: postgres.Sql
 
-  constructor (
-    host: string,
-    port: number,
-    user: string,
-    password: string,
-    database: string
-  ) {
+  constructor () {
     this.sql = postgres({
-      host,
-      port,
-      user,
-      password,
-      database,
+      ...config.db,
       onnotice: () => {}
     })
   }

@@ -1,8 +1,4 @@
-/* eslint-disable no-console */
-// import 'reflect-metadata'
-
 import { OllamaEmbeddings } from '@langchain/ollama'
-
 import { PostgresConnection } from './infrastructure/PostgresConnection'
 
 async function main (
@@ -24,13 +20,7 @@ LIMIT 5;
   console.log(`For the query "${query}" the results are:`, results.map(r => r.name))
 }
 
-const pgConnection = new PostgresConnection(
-  'localhost',
-  5432,
-  'codely',
-  'c0d3ly7v',
-  'postgres'
-)
+const pgConnection = new PostgresConnection()
 const embeddingsGenerator = new OllamaEmbeddings({
   model: 'nomic-embed-text',
   baseUrl: 'http://localhost:11434'
