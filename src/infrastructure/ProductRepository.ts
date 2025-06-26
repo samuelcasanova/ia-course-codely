@@ -8,9 +8,9 @@ export interface Product {
   description: string
 }
 
-export class ProductsRepository {
+export class ProductRepository {
   constructor (private readonly pgConnection: PostgresConnection, private readonly embeddingsGenerator: OllamaEmbeddingsGenerator) {}
-  async get (): Promise<Product[]> {
+  async getAll (): Promise<Product[]> {
     return catalogueJson[0].catalogueItems.map(item => ({
       sku: item.sku,
       name: item.title.en_GB,

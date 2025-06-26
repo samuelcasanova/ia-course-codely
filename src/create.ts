@@ -1,6 +1,6 @@
 import { PostgresConnection } from './infrastructure/PostgresConnection'
 import { OllamaEmbeddingsGenerator } from './infrastructure/OllamaEmbeddingsGenerator'
-import { ProductsRepository } from './infrastructure/ProductsRepository'
+import { ProductRepository } from './infrastructure/ProductRepository'
 
 async function createDatabase (pgConnection: PostgresConnection): Promise<void> {
   await pgConnection.sql`CREATE EXTENSION IF NOT EXISTS vector;`
@@ -14,11 +14,11 @@ async function main (): Promise<void> {
 
   try {
     const embeddingsGenerator = new OllamaEmbeddingsGenerator()
-    const productRepository = new ProductsRepository(pgConnection, embeddingsGenerator)
+    const productRepository = new ProductRepository(pgConnection, embeddingsGenerator)
 
     await createDatabase(pgConnection)
 
-    const products = await productRepository.get()
+    const products = await productRepository.getAll()
 
     await Promise.all(products.map(async (product) => {
       await productRepository.create(product)

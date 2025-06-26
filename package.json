@@ -5,14 +5,13 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint src",
-    "build": "rm -rf ./build && tsc",
-    "start": "npm run build && node build/src/index.js",
-    "dev": "nodemon",
     "test:watch": "jest --watch",
     "test": "jest",
-    "model": "docker exec -it ollama ollama run nomic-embed-text",
+    "model:search": "docker exec -it ollama ollama run nomic-embed-text",
+    "model:recommend": "docker exec -it ollama ollama run llama3.1:8b",
     "create": "ts-node ./src/create.ts",
-    "search": "ts-node ./src/search.ts"
+    "search": "ts-node ./src/search.ts",
+    "recommend": "ts-node ./src/recommend.ts"
   },
   "keywords": [
     "node",
@@ -38,6 +37,8 @@
   },
   "dependencies": {
     "@langchain/ollama": "^0.2.2",
-    "postgres": "^3.4.7"
+    "langchain": "^0.3.29",
+    "postgres": "^3.4.7",
+    "zod": "^3.25.67"
   }
 }

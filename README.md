@@ -41,29 +41,47 @@ You just need git and node installed in your computer to use this template
    npm install
    ```
 
+### Infrastructure startup/teardown
+
+1. Start the Ollama and Postgres servers
+   ```sh
+   docker compose up
+   ```
+2. Tear down the servers
+   ```sh
+   docker compose down
+   ```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Usage
+### Use the search powered with embeddings
 
-1. Build the production code
+1. Run the nomic model in the Ollama server
    ```sh
-   npm run build
+   npm run model:search
    ```
-2. Start the hello world
+2. Create the catalogue products with the embeddings in the DB
    ```sh
-   npm start
+   npm run create
    ```
-3. You can also start the hello world in dev mode with nodemon
+3. Run the search
    ```sh
-   npm run dev
+   npm run search -- "I would like a sandwich"
    ```
-4. Run tests
+
+### Use the product recommender based on your basket
+
+1. Run the Llama3 model in the Ollama server
    ```sh
-   npm test
+   npm run model:recommend
    ```
-5. Run linter
+2. Create the catalogue products with the embeddings in the DB (if not created yet)
    ```sh
-   npm run lint
+   npm run create
+   ```
+3. Run the search
+   ```sh
+   npm run recommend -- "ISG02036,SG.00000686,ISS00006"
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
