@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { ChatOllama } from '@langchain/ollama'
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai'
 import {
   ChatPromptTemplate,
   HumanMessagePromptTemplate,
@@ -11,6 +12,7 @@ import { StructuredOutputParser } from '@langchain/core/output_parsers'
 import { RunnableSequence } from '@langchain/core/runnables'
 
 async function main (
+  model: string,
   basketSkus: string[],
   productRepository: ProductRepository
 ): Promise<void> {
@@ -33,31 +35,29 @@ async function main (
   )
 
   const chatPrompt = ChatPromptTemplate.fromMessages([
+    SystemMessagePromptTemplate.fromTemplate('You are an advanced product recommender'),
     HumanMessagePromptTemplate.fromTemplate(
       `
-You are an advanced product recommender. Your task is to suggest 3 products to a user based on a list of products that the user has added to their basket. Consider the following:
-- You can only recommend products from the list of available products.
-- You can only recommend products that the user has not yet added to their basket.
-- You should provide a reason for each recommendation in neutral English. i.e. "Because you have selected a ham sandwich in your basket".
-- You should return ONLY an array of objects, one for each recommended product. Each product should be an object with the properties "sku" (string), "name" (string) and "reason" (string).
-- The resulting array of objects should be in JSON format, it should be parseable with the Javascript JSON.parse function. The JSON should have the following structure:
-{formatInstructions}
-
 List of available products (each one has an sku, name and description):
 {availableProducts}
 
-List of products in the user's basket (each one has an sku, name and description):
+List of products the customer has in their basket (each one has an sku, name and description):
 {basketProducts}
+
+Your task is to recommend 3 available products to a customer, based on the list of products the customer has in their basket. Consider the following:
+- You can only recommend products from the list of available products.
+- You can only recommend products that are not currently in their basket.
+- You should provide a reason for each recommendation in neutral English.
+- You should return ONLY an array of objects, one for each recommended product, in JSON format (don't add any other text or symbols, just parseable JSON), with the following structure:
+{formatInstructions}
       `.trim()
     )
   ])
 
   const chain = RunnableSequence.from([
-    chatPrompt,
-    new ChatOllama({
-      model: 'llama3.1:8b',
-      temperature: 0
-    }),
+    chatPrompt, model === 'gemini'
+      ? new ChatGoogleGenerativeAI({ model: 'gemini-2.0-flash-lite', apiKey: process.env.GOOGLE_GENAI_API_KEY as string, temperature: 0.5 })
+      : new ChatOllama({ model: 'llama3.2:3b', temperature: 0.5 }),
     outputParser
   ])
 
@@ -72,7 +72,7 @@ List of products in the user's basket (each one has an sku, name and description
 }
 
 function formatProduct (product: Product): string {
-  return `sku: ${product.sku}, name: ${product.name}, description: ${product.description}`
+  return `- sku: ${product.sku}, name: ${product.name}, description: ${product.description}`
 }
 
 function formatInputBasketSkus (arg: string): string[] {
@@ -82,7 +82,7 @@ function formatInputBasketSkus (arg: string): string[] {
 const pgConnection = new PostgresConnection()
 const productRepository = new ProductRepository(pgConnection, null as any)
 
-main(formatInputBasketSkus(process.argv[2]), productRepository)
+main(process.argv[2], formatInputBasketSkus(process.argv[3]), productRepository)
   .catch(console.error)
   .finally(() => {
     void pgConnection.end()

@@ -75,13 +75,14 @@ You just need git and node installed in your computer to use this template
    ```sh
    npm run model:recommend
    ```
-2. Create the catalogue products with the embeddings in the DB (if not created yet)
+2. Run the recommender using Llama 3 model over Ollama
    ```sh
-   npm run create
+   npm run recommend -- ollama "ISG02036,ISS00014,ISS00006"
    ```
-3. Run the search
+or
+1. Run the recommender using Google Cloud Gemini model
    ```sh
-   npm run recommend -- "ISG02036,SG.00000686,ISS00006"
+   GOOGLE_GENAI_API_KEY=YOUR_API_KEY npm run recommend -- gemini "ISG02036,ISS00014,ISS00006"
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

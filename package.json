@@ -8,7 +8,7 @@
     "test:watch": "jest --watch",
     "test": "jest",
     "model:search": "docker exec -it ollama ollama run nomic-embed-text",
-    "model:recommend": "docker exec -it ollama ollama run llama3.1:8b",
+    "model:recommend": "docker exec -it ollama ollama run llama3.2:3b",
     "create": "ts-node ./src/create.ts",
     "search": "ts-node ./src/search.ts",
     "recommend": "ts-node ./src/recommend.ts"
@@ -36,6 +36,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@langchain/google-genai": "^0.2.13",
     "@langchain/ollama": "^0.2.2",
     "langchain": "^0.3.29",
     "postgres": "^3.4.7",
