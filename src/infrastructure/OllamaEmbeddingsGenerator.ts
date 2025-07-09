@@ -7,9 +7,8 @@ export class OllamaEmbeddingsGenerator {
     this.generator = new OllamaEmbeddings(config.ia)
   }
 
-  async getEmbeddings (text: string): Promise<number[]> {
+  async getEmbedding (text: string): Promise<number[]> {
     // testing request: curl http://localhost:11434/api/embeddings -d '{"model": "nomic-embed-text","prompt": "The sky is blue because of Rayleigh scattering"}'
-    const [embeddings] = await this.generator.embedDocuments([text])
-    return embeddings
+    return await this.generator.embedQuery(text)
   }
 }

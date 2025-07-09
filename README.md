@@ -66,10 +66,10 @@ You just need git and node installed in your computer to use this template
    ```
 3. Run the search
    ```sh
-   npm run search -- "I would like a sandwich"
+   npm run search -- "I would like a sandwich" 
    ```
 
-### Use the product recommender based on your basket
+### Use the product recommender based on your basket directly with a local Llama3 model
 
 1. Run the Llama3 model in the Ollama server
    ```sh
@@ -77,12 +77,31 @@ You just need git and node installed in your computer to use this template
    ```
 2. Run the recommender using Llama 3 model over Ollama
    ```sh
-   npm run recommend -- ollama "ISG02036,ISS00014,ISS00006"
+   npm run recommend -- ollama "ISG02036,ISS00013,ISS00006"
    ```
-or
+### Use the product recommender based on your basket directly with a cloud-based Gemini model
+
 1. Run the recommender using Google Cloud Gemini model
    ```sh
-   GOOGLE_GENAI_API_KEY=YOUR_API_KEY npm run recommend -- gemini "ISG02036,ISS00014,ISS00006"
+   GOOGLE_GENAI_API_KEY=YOUR_API_KEY npm run recommend -- gemini "ISG02036,ISS00013,ISS00006"
+   ```
+### Use the product recommender based on your basket with a local Llama3 model but previously filtering with embeddings
+
+1. Run the Llama3 model in the Ollama server
+   ```sh
+   npm run model:recommend
+   ```
+2. Run also the nomic model in the Ollama server for the embeddings
+   ```sh
+   npm run model:search
+   ```
+3. Create the catalogue products with the embeddings in the DB
+   ```sh
+   npm run create
+   ```
+4. Run the recommender using Llama 3 model over Ollama with the filtering parameter
+   ```sh
+   npm run recommend -- ollama "ISG02036,ISS00013,ISS00006" true
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

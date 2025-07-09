@@ -6,14 +6,14 @@ async function main (
   connection: PostgresConnection,
   embeddingsGenerator: OllamaEmbeddings
 ): Promise<void> {
-  const embedding = JSON.stringify(
+  const embeddings = JSON.stringify(
     await embeddingsGenerator.embedQuery(query)
   )
 
   const results = await connection.sql`
 SELECT name
 FROM catalogue.products
-ORDER BY (embedding <=> ${embedding})
+ORDER BY (embedding <=> ${embeddings})
 LIMIT 5;
 `
 

@@ -10,15 +10,17 @@ import { PostgresConnection } from './infrastructure/PostgresConnection'
 import { type Product, ProductRepository } from './infrastructure/ProductRepository'
 import { StructuredOutputParser } from '@langchain/core/output_parsers'
 import { RunnableSequence } from '@langchain/core/runnables'
+import { OllamaEmbeddingsGenerator } from './infrastructure/OllamaEmbeddingsGenerator'
 
 async function main (
   model: string,
   basketSkus: string[],
+  isFiltered: boolean,
   productRepository: ProductRepository
 ): Promise<void> {
-  const availableProducts = await productRepository.getAll()
+  const availableProducts = isFiltered ? await productRepository.getSimilarBySkus(basketSkus, 10) : await productRepository.getAll()
 
-  const basketProducts = availableProducts.filter(p => basketSkus.includes(p.sku))
+  const basketProducts = await productRepository.getBySkus(basketSkus)
 
   const outputParser = StructuredOutputParser.fromZodSchema(
     z.array(
@@ -56,8 +58,8 @@ Your task is to recommend 3 available products to a customer, based on the list 
 
   const chain = RunnableSequence.from([
     chatPrompt, model === 'gemini'
-      ? new ChatGoogleGenerativeAI({ model: 'gemini-2.0-flash-lite', apiKey: process.env.GOOGLE_GENAI_API_KEY as string, temperature: 0.5 })
-      : new ChatOllama({ model: 'llama3.2:3b', temperature: 0.5 }),
+      ? new ChatGoogleGenerativeAI({ model: 'gemini-2.0-flash-lite', apiKey: process.env.GOOGLE_GENAI_API_KEY as string, temperature: 0 })
+      : new ChatOllama({ model: 'llama3.2:3b', temperature: 0 }),
     outputParser
   ])
 
@@ -79,10 +81,15 @@ function formatInputBasketSkus (arg: string): string[] {
   return arg.split(',')
 }
 
-const pgConnection = new PostgresConnection()
-const productRepository = new ProductRepository(pgConnection, null as any)
+const model = process.argv[2]
+const skus = formatInputBasketSkus(process.argv[3])
+const isFiltered = process.argv[4] === 'true'
 
-main(process.argv[2], formatInputBasketSkus(process.argv[3]), productRepository)
+const pgConnection = new PostgresConnection()
+const embeddingsGenerator = new OllamaEmbeddingsGenerator()
+const productRepository = new ProductRepository(pgConnection, embeddingsGenerator)
+
+main(model, skus, isFiltered, productRepository)
   .catch(console.error)
   .finally(() => {
     void pgConnection.end()
