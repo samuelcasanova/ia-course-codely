@@ -11,11 +11,11 @@ async function main (
   )
 
   const results = await connection.sql`
-SELECT name
-FROM catalogue.products
-ORDER BY (embedding <=> ${embeddings})
-LIMIT 5;
-`
+    SELECT name
+    FROM catalogue.products
+    ORDER BY (embedding <=> ${embeddings})
+    LIMIT 5;
+    `
 
   console.log(`For the query "${query}" the results are:`, results.map(r => r.name))
 }
@@ -30,7 +30,4 @@ main(process.argv[2], pgConnection, embeddingsGenerator)
   .catch(console.error)
   .finally(() => {
     void pgConnection.end()
-    console.log('Done!')
-
-    process.exit(0)
   })

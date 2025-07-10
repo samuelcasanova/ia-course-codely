@@ -93,7 +93,4 @@ main(model, skus, isFiltered, productRepository)
   .catch(console.error)
   .finally(() => {
     void pgConnection.end()
-    console.log('Done!')
-
-    process.exit(0)
   })

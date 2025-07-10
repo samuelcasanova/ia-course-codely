@@ -7,11 +7,11 @@
     "lint": "./node_modules/.bin/eslint src",
     "test:watch": "jest --watch",
     "test": "jest",
-    "model:search": "docker exec -it ollama ollama run nomic-embed-text",
-    "model:recommend": "docker exec -it ollama ollama run llama3.2:3b",
-    "create": "ts-node ./src/create.ts",
-    "search": "ts-node ./src/search.ts",
-    "recommend": "ts-node ./src/recommend.ts"
+    "model:search": "docker exec -it ollama ollama run nomic-embed-text > /dev/null 2>&1 &",
+    "model:recommend": "docker exec -it ollama ollama run llama3.2:3b > /dev/null 2>&1 &",
+    "create": "ts-node ./src/createCatalogue.ts",
+    "search": "ts-node ./src/searchProduct.ts",
+    "recommend": "ts-node ./src/recommendProduct.ts"
   },
   "keywords": [
     "node",

@@ -28,13 +28,13 @@ IA course by Codely TV
 
 ### Prerequisites
 
-You just need git and node installed in your computer to use this template
+You just need git, node and docker installed in your computer to use this project
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone git@github.com:samuelcasanova/node-template.git
+   git clone git@github.com:samuelcasanova/ia-course-codely.git
    ```
 2. Install dependencies
    ```sh
@@ -79,12 +79,14 @@ You just need git and node installed in your computer to use this template
    ```sh
    npm run recommend -- ollama "ISG02036,ISS00013,ISS00006"
    ```
+
 ### Use the product recommender based on your basket directly with a cloud-based Gemini model
 
 1. Run the recommender using Google Cloud Gemini model
    ```sh
    GOOGLE_GENAI_API_KEY=YOUR_API_KEY npm run recommend -- gemini "ISG02036,ISS00013,ISS00006"
    ```
+
 ### Use the product recommender based on your basket with a local Llama3 model but previously filtering with embeddings
 
 1. Run the Llama3 model in the Ollama server

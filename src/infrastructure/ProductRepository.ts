@@ -52,4 +52,23 @@ export class ProductRepository {
       description: r.description
     }))
   }
+
+  async searchByQuery (query: string): Promise<Product[]> {
+    const embedding = JSON.stringify(
+      await this.embeddingsGenerator.getEmbedding(query)
+    )
+
+    const results = await this.pgConnection.sql`
+    SELECT sku, name, description
+    FROM catalogue.products
+    ORDER BY (embedding <=> ${embedding})
+    LIMIT 5;
+    `
+
+    return results.map(r => ({
+      sku: r.sku,
+      name: r.name,
+      description: r.description
+    }))
+  }
 }

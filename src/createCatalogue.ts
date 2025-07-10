@@ -9,28 +9,27 @@ async function createDatabase (pgConnection: PostgresConnection): Promise<void> 
   await pgConnection.sql`CREATE TABLE catalogue.products (sku VARCHAR(64) PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(1024) NOT NULL, embedding vector(768));`
 }
 
-async function main (): Promise<void> {
-  const pgConnection = new PostgresConnection()
+async function main (
+  pgConnection: PostgresConnection,
+  productRepository: ProductRepository
+): Promise<void> {
+  await createDatabase(pgConnection)
 
-  try {
-    const embeddingsGenerator = new OllamaEmbeddingsGenerator()
-    const productRepository = new ProductRepository(pgConnection, embeddingsGenerator)
+  const products = await productRepository.getAll()
 
-    await createDatabase(pgConnection)
+  await Promise.all(products.map(async (product) => {
+    await productRepository.create(product)
+  }))
 
-    const products = await productRepository.getAll()
-
-    await Promise.all(products.map(async (product) => {
-      await productRepository.create(product)
-    }))
-  } catch (error) {
-    console.error(error)
-    process.exit(1)
-  } finally {
-    await pgConnection.end()
-    console.log('Done!')
-    process.exit(0)
-  }
+  console.log('Done!')
 }
 
-void main()
+const pgConnection = new PostgresConnection()
+const embeddingsGenerator = new OllamaEmbeddingsGenerator()
+const productRepository = new ProductRepository(pgConnection, embeddingsGenerator)
+
+void main(pgConnection, productRepository)
+  .catch(console.error)
+  .finally(() => {
+    void pgConnection.end()
+  })
