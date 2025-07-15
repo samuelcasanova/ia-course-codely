@@ -62,7 +62,7 @@ You just need git, node and docker installed in your computer to use this projec
    ```
 2. Create the catalogue products with the embeddings in the DB
    ```sh
-   npm run create
+   npm run create:catalogue
    ```
 3. Run the search
    ```sh
@@ -77,7 +77,7 @@ You just need git, node and docker installed in your computer to use this projec
    ```
 2. Run the recommender using Llama 3 model over Ollama
    ```sh
-   npm run recommend -- ollama "ISG02036,ISS00013,ISS00006"
+   npm run recommend:product -- ollama "ISG02036,ISS00013,ISS00006"
    ```
 
 ### Use the product recommender based on your basket directly with a cloud-based Gemini model
@@ -99,11 +99,27 @@ You just need git, node and docker installed in your computer to use this projec
    ```
 3. Create the catalogue products with the embeddings in the DB
    ```sh
-   npm run create
+   npm run create:catalogue
    ```
 4. Run the recommender using Llama 3 model over Ollama with the filtering parameter
    ```sh
-   npm run recommend -- ollama "ISG02036,ISS00013,ISS00006" true
+   npm run recommend:product -- ollama "ISG02036,ISS00013,ISS00006" true
+   ```
+
+### Use the ronda recommender parsing the pdfs
+
+1. Run the nomic model in the Ollama server
+   ```sh
+   npm run model:search
+   ```
+2. Execute the pdf scrapper and store the magazine embeddings in the DB
+   ```sh
+   npm run create:ronda
+   ```
+3. Run the ronda recommender using Llama 3 model over Ollama
+   ```sh
+   npm run recommend:ronda -- "I am travelling to Porto"
+   npm run recommend:ronda -- "I like sailing"
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

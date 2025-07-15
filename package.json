@@ -9,9 +9,11 @@
     "test": "jest",
     "model:search": "docker exec -it ollama ollama run nomic-embed-text > /dev/null 2>&1 &",
     "model:recommend": "docker exec -it ollama ollama run llama3.2:3b > /dev/null 2>&1 &",
-    "create": "ts-node ./src/createCatalogue.ts",
+    "create:catalogue": "ts-node ./src/createCatalogue.ts",
+    "create:ronda": "ts-node ./src/createRonda.ts",
     "search": "ts-node ./src/searchProduct.ts",
-    "recommend": "ts-node ./src/recommendProduct.ts"
+    "recommend:product": "ts-node ./src/recommendProduct.ts",
+    "recommend:ronda": "ts-node ./src/recommendRonda.ts"
   },
   "keywords": [
     "node",
@@ -36,9 +38,12 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@langchain/community": "^0.3.48",
+    "@langchain/core": "^0.3.62",
     "@langchain/google-genai": "^0.2.13",
     "@langchain/ollama": "^0.2.2",
     "langchain": "^0.3.29",
+    "pdf-parse": "^1.1.1",
     "postgres": "^3.4.7",
     "zod": "^3.25.67"
   }
