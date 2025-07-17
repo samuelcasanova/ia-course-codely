@@ -116,10 +116,10 @@ You just need git, node and docker installed in your computer to use this projec
    ```sh
    npm run create:ronda
    ```
-3. Run the ronda recommender using Llama 3 model over Ollama
+3. Run the ronda recommender using Llama 3 model over Ollama or Google Cloud Gemini model
    ```sh
-   npm run recommend:ronda -- "I am travelling to Porto"
-   npm run recommend:ronda -- "I like sailing"
+   npm run recommend:ronda -- ollama "I am travelling from Barcelona to Montevideo"
+   GOOGLE_GENAI_API_KEY=YOUR_API_KEY npm run recommend:ronda -- gemini "I like sailing"
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
